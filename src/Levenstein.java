@@ -47,12 +47,7 @@ public class Levenstein
     // Substring!!!
     public static String subwordConstruct(String mot, int subLength)
     {
-        String sousmot = "";
-        for(int wordIndex = 0; wordIndex < subLength; wordIndex++)
-        {
-            sousmot += mot.charAt(wordIndex);
-        }
-        return sousmot;
+        return mot.substring(0,subLength);
     }
 
     public static int subdistLevenshtein(String mot1, String mot2, int[][] decomposedDistanceMatrix)
