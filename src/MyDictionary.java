@@ -54,7 +54,7 @@ public class MyDictionary
         return regularDictionary.contains(word);
     }
 
-    public HashMap<Integer,ArrayList<String>> findSimilarWords(String word)
+    public ArrayList<ArrayList<String>> findSimilarWords(String word)
     {
         ArrayList<String> wordTrigrammes = Trigrammes.findTrigrammes(word);
 
@@ -75,52 +75,27 @@ public class MyDictionary
                 wordsSharedTrigCount.put(similarWord, currentWordCount == null ? 1 : currentWordCount + 1);
             }
         }
-        System.out.println("Comptage de trig : " + (System.nanoTime()-findSWStartTime)/1000000000);
+        //System.out.println("Comptage de trig : " + (System.nanoTime()-findSWStartTime)/1000000000);
 
-        double reverseMapStartTime = System.nanoTime();
-        HashMap<Integer,ArrayList<String>> wordBySharedTrigCount = new HashMap<Integer,ArrayList<String>>();
+        //double reverseMapStartTime = System.nanoTime();
+        ArrayList<ArrayList<String>> wordBySharedTrigCount = new ArrayList<ArrayList<String>>();
 
-        for(String currentWord : wordsSharedTrigCount.keySet())
+        for (int initIndex = 0 ; initIndex < 30; initIndex++)
         {
-            Integer currentWSTCValue = wordsSharedTrigCount.get(currentWord);
-            ArrayList<String> WBSTCAssocietedValue = wordBySharedTrigCount.get(currentWSTCValue);
-            if (WBSTCAssocietedValue == null)
-            {
-                ArrayList<String> addedWord = new ArrayList<String>();
-                addedWord.add(currentWord);
-                wordBySharedTrigCount.put(currentWSTCValue,addedWord);
-            }
-            else
-            {
-                WBSTCAssocietedValue.add(currentWord);
-            }
+            ArrayList<String> initList = new ArrayList<String>();
+            wordBySharedTrigCount.add(initList);
         }
 
-        System.out.println("Inversion HashMap : " + (System.nanoTime()-reverseMapStartTime)/1000000000);
+        for(Map.Entry<String, Integer> e : wordsSharedTrigCount.entrySet())
+        {
+            //Integer currentWSTC = wordsSharedTrigCount.get(currentWord);
+            //wordBySharedTrigCount.get(currentWSTC).add(currentWord);
+            wordBySharedTrigCount.get(e.getValue()).add(e.getKey());
+        }
+
+        //System.out.println("Inversion HashMap : " + (System.nanoTime()-reverseMapStartTime)/1000000000);
         totalSearchDuration += (System.nanoTime() - findSWStartTime)/1000000000;
         return wordBySharedTrigCount;
     }
-
-//    // Old version
-//    public boolean contains(String word, ArrayList<String> wordTrigrammes)
-//    {
-//        int minLength = 400000;                                     //Faire des stats
-//
-//        String minTrig = wordTrigrammes.get(0);
-//        for(String wordTrigIter : wordTrigrammes)
-//        {
-//            if( dictionaryByTrig.containsKey(wordTrigIter) && ( dictionaryByTrig.get(wordTrigIter).size() < minLength ) )
-//            {
-//                minTrig = wordTrigIter;
-//                minLength = dictionaryByTrig.get(wordTrigIter).size();
-//            }
-//        }
-//
-//        if( dictionaryByTrig.containsKey(minTrig) && (dictionaryByTrig.get(minTrig).contains(word)) )
-//        {
-//            return true;
-//        }
-//        return false;
-//    }
 
 }

@@ -30,11 +30,11 @@ public class CorrecteurOrtho
         //System.out.println("Test presence dico : " + (System.nanoTime()-correctionStartTime)/1000000000);
 
         // Recherche de Mot similaire
-        HashMap<Integer,ArrayList<String>> sharedTrigrammesCount = dictionary.findSimilarWords(word);
+        ArrayList<ArrayList<String>> sharedTrigrammesCount = dictionary.findSimilarWords(word);
         //System.out.println("findSimilarWords : " + (System.nanoTime()-correctionStartTime)/1000000000);
 
         // Selection de N mot similaire
-        ArrayList<String> reallySimilarWords = descendingSelection(sharedTrigrammesCount,100, 30);
+        ArrayList<String> reallySimilarWords = descendingSelection(sharedTrigrammesCount,100, 29);
         //System.out.println("Selection 100 mots : " + (System.nanoTime()-correctionStartTime)/1000000000);
 
         // Calcul des distances d'edition
@@ -105,7 +105,7 @@ public class CorrecteurOrtho
         }
     }
 
-    private ArrayList<String> descendingSelection(HashMap<Integer,ArrayList<String>> mapToReduce, int maxValueCount, int maxKeyValue)
+    private ArrayList<String> descendingSelection(ArrayList<ArrayList<String>> listToReduce, int maxValueCount, int maxKeyValue)
     {
         ArrayList<String> selectedWord = new ArrayList<String>();
         int keyIterator = maxKeyValue;
@@ -113,20 +113,21 @@ public class CorrecteurOrtho
 
         while((keyIterator>0) && (selectedWordCount < maxValueCount))
         {
-            if(!mapToReduce.containsKey(keyIterator))
+            ArrayList<String> currentList = listToReduce.get(keyIterator);
+            if(currentList.isEmpty())
             {
                 keyIterator--;
                 continue;
             }
 
-            if((mapToReduce.get(keyIterator).size() + selectedWordCount)<= maxValueCount)
+            if((currentList.size() + selectedWordCount) <= maxValueCount)
             {
-                selectedWord.addAll(mapToReduce.get(keyIterator));
-                selectedWordCount += mapToReduce.get(keyIterator).size();
+                selectedWord.addAll(currentList);
+                selectedWordCount += currentList.size();
             }
             else
             {
-                selectedWord.addAll(mapToReduce.get(keyIterator).subList( 0, (maxValueCount - selectedWordCount)) );
+                selectedWord.addAll(currentList.subList( 0, (maxValueCount - selectedWordCount)) );
                 selectedWordCount = maxValueCount;
             }
             keyIterator--;

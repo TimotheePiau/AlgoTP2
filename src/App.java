@@ -20,6 +20,7 @@ public class App
             ArrayList<ArrayList<String>> correctedFile = myCorrector.correctionFromFile("ressources/fautes.txt");
             double fileCorrectionDuration = (System.nanoTime()-startTime)/1000000000;
             System.out.println("Temps passé dans findSimilarWords : " + dictionary.totalSearchDuration + "s");
+            
             System.out.println("Correction du fichier : " + fileCorrectionDuration + "s");
             System.out.println();
         }
