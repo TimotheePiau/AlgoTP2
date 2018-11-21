@@ -18,7 +18,7 @@ public class CorrecteurOrtho
 
     public ArrayList<String> correction(String word)
     {
-        System.out.println(word);
+        //System.out.println(word);
 
         //double correctionStartTime =System.nanoTime();
 
@@ -46,7 +46,7 @@ public class CorrecteurOrtho
         //System.out.println("Selection 5 mots : " + (System.nanoTime()-correctionStartTime)/1000000000);
 
         //System.out.println("Temps total : " + (System.nanoTime()-correctionStartTime)/1000000000);
-        System.out.println();
+        //System.out.println();
 
         return possibleCorrection;
 
